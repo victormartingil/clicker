@@ -1,5 +1,7 @@
 import java.awt.*;
 import java.awt.event.InputEvent;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,15 +15,17 @@ public class Click {
     Click() throws AWTException {
     }
 
-    public void letsClick() {
+    public void letsClick(int period) {
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 bot.mousePress(mask);
                 bot.mouseRelease(mask);
                 cont ++;
-                System.out.println("Click -> " + cont);
+                String formatoFecha = "kk:mm:ss";
+                SimpleDateFormat fechaConFormato = new SimpleDateFormat(formatoFecha);
+                System.out.println(String.format("Click -> " + cont + " - " + fechaConFormato.format(new Date())));
             }
-        }, 10000, 59000);
+        }, 1000, period);
     }
 
 }
