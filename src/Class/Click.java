@@ -13,7 +13,6 @@ public class Click {
     public Click() throws AWTException {
     }
 
-
     int segundos;
 
     public void mainClick() throws AWTException {
@@ -28,20 +27,5 @@ public class Click {
         myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
 
-//    public void letsClick(int period) {
-//        String formatoFecha = "kk:mm:ss";
-//        SimpleDateFormat fechaConFormato = new SimpleDateFormat(formatoFecha);
-////        String click = "Class.Click -> " + cont + " - " + fechaConFormato.format(new Date());
-//        JOptionPane.showMessageDialog(null, click);
-//        timer.scheduleAtFixedRate(new TimerTask() {
-//            public void run() {
-//                bot.mousePress(mask);
-//                bot.mouseRelease(mask);
-//                cont++;
-//                click = "Class.Click -> " + cont + " - " + fechaConFormato.format(new Date());
-////                System.out.println(String.format("Class.Click -> " + cont + " - " + fechaConFormato.format(new Date())));
-//            }
-//        }, 1000, period * 1000);
-//    }
 
 }
