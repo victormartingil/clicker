@@ -11,7 +11,7 @@ import java.util.TimerTask;
 public class MainSwing extends JFrame {
 
     Robot bot = new Robot();
-    java.util.Timer timer = new Timer();
+    java.util.Timer timer;
     int mask = InputEvent.BUTTON1_DOWN_MASK;
     double period;
 
@@ -19,7 +19,7 @@ public class MainSwing extends JFrame {
     SimpleDateFormat fechaConFormato = new SimpleDateFormat(formatoFecha);
 
     String clicker;
-    int cont = 0;
+    int cont;
 
     private JPanel mainPanel;
 
@@ -63,8 +63,28 @@ public class MainSwing extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                period = Double.parseDouble(inputTextField.getText());
-                letsClick(period);
+                try {
+                    period = Double.parseDouble(inputTextField.getText());
+                    letsClick(period);
+                } catch (Exception ex) {
+                    resultLabel.setForeground(Color.RED);
+                    resultLabel.setText("Debe introducir un número positivo");
+                    System.out.println(ex.getMessage());
+                }
+            }
+        });
+
+        stopButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    timer.cancel();
+                    resultLabel.setForeground(Color.WHITE);
+                    resultLabel.setText("Stopped!");
+                } catch (Exception ex) {
+                    resultLabel.setForeground(Color.RED);
+                    resultLabel.setText("Todavía no ha iniciado Clicker!");
+                }
             }
         });
 
@@ -103,8 +123,11 @@ public class MainSwing extends JFrame {
     }
 
     public void letsClick(double secs) {
+        timer = new Timer();
+        cont = 0;
         secs = secs * 1000;
         int milisecs = (int)secs;
+        resultLabel.setForeground(new Color(235,218,42));
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 bot.mousePress(mask);
