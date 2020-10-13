@@ -13,23 +13,33 @@ public class MyFrame extends JFrame {
     Robot bot = new Robot();
     java.util.Timer timer = new Timer();
     int mask = InputEvent.BUTTON1_DOWN_MASK;
-    int cont = 0;
-    String clicker = "Bienvenid@ a Clicker!\n";
+
     String formatoFecha = "kk:mm:ss";
     SimpleDateFormat fechaConFormato = new SimpleDateFormat(formatoFecha);
-    JTextArea ta;
+
+    String clicker;
+    int cont = 0;
+
+    JTextPane tp;
     JScrollPane sp;
 
+//    EmptyBorder eb = new EmptyBorder(new Insets(10, 10, 10, 10));
+
     public MyFrame(int segundos) throws AWTException {
+        tp = new JTextPane();
+        sp = new JScrollPane(tp);
+
         setLayout(null);
         setVisible(true);
-        setBounds(50, 50, 300, 200);
-        ta = new JTextArea();
-        sp = new JScrollPane(ta);
-        ta.append(clicker);
-        sp.setBounds(0, 0, 250, 160);
-        sp.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        getContentPane().add(sp);
+        setBounds(50, 50, 300, 150);
+
+        sp.setBounds(-1, 0, 300, 150);
+        tp.setBackground(Color.black);
+        tp.setForeground(Color.yellow);
+
+
+        add(sp);
+
         letsClick(segundos);
     }
 
@@ -40,9 +50,7 @@ public class MyFrame extends JFrame {
                 bot.mouseRelease(mask);
                 cont++;
                 clicker = "Click nº " + cont + " - " + fechaConFormato.format(new Date());
-                ta.append("\n" + clicker);
-                int len = ta.getDocument().getLength();
-                ta.setCaretPosition(len);
+                tp.setText(clicker);
             }
         }, 1000, period * 1000);
     }
