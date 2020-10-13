@@ -13,7 +13,7 @@ public class MainSwing extends JFrame {
     Robot bot = new Robot();
     java.util.Timer timer = new Timer();
     int mask = InputEvent.BUTTON1_DOWN_MASK;
-    int period;
+    double period;
 
     String formatoFecha = "kk:mm:ss";
     SimpleDateFormat fechaConFormato = new SimpleDateFormat(formatoFecha);
@@ -63,7 +63,7 @@ public class MainSwing extends JFrame {
         startButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                period = Integer.parseInt(inputTextField.getText());
+                period = Double.parseDouble(inputTextField.getText());
                 letsClick(period);
             }
         });
@@ -102,7 +102,9 @@ public class MainSwing extends JFrame {
         });
     }
 
-    public void letsClick(int period) {
+    public void letsClick(double secs) {
+        secs = secs * 1000;
+        int milisecs = (int)secs;
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 bot.mousePress(mask);
@@ -111,7 +113,7 @@ public class MainSwing extends JFrame {
                 clicker = "Click nº " + cont + " - " + fechaConFormato.format(new Date());
                 resultLabel.setText(clicker);
             }
-        }, 1000, period * 1000);
+        }, 1000, milisecs);
     }
 
     public static void main(String[] args) throws AWTException {
