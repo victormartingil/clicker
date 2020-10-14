@@ -295,13 +295,15 @@ public class MainSwing extends JFrame {
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount() >= 2){
+                if(e.getClickCount() > 1){
                     frame.setExtendedState(JFrame.NORMAL);
                     frame.setVisible(true);
+                    frame.toFront();
                     systemTray.remove(trayIcon);
                 }
             }
         });
+
 
         try{
             systemTray.add(trayIcon);
