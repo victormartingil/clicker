@@ -3,6 +3,7 @@ package com.clicker.app.swing;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Timer;
@@ -10,19 +11,19 @@ import java.util.TimerTask;
 
 public class MainSwing extends JFrame {
 
+    // Variables para el timer
     Robot bot = new Robot();
     java.util.Timer timer;
-    int mask = InputEvent.BUTTON1_DOWN_MASK;
-    double period;
 
+    // La fecha sólo mostrara la hora (24h:mm:ss)
     String formatoFecha = "kk:mm:ss";
     SimpleDateFormat fechaConFormato = new SimpleDateFormat(formatoFecha);
 
-    String clicker;
+    String consoleMessage;
+    double period;
     int cont;
 
     private JPanel mainPanel;
-
 
     private JPanel decriptionPanel;
     private JLabel descriptionLabel;
@@ -45,16 +46,27 @@ public class MainSwing extends JFrame {
     private JButton minButton;
     private JPanel tittleButtonPanel;
 
+    private JRadioButton clickRatonRadioButton;
+    private JRadioButton teclaCtrlRadioButton;
+    private JPanel radioButtonPanel;
+    ButtonGroup group = new ButtonGroup();
+
 
     public MainSwing(String title) throws AWTException {
         super(title);
 
-        this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
-        this.setUndecorated(true);
-        this.setContentPane(mainPanel);
-        this.pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
+        setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setUndecorated(true);
+        setIcon();
+//        this.setType(Type.UTILITY); // Oculta icono pero no se como volver a maximizar
+        setContentPane(mainPanel);
+        pack();
         stopButton.setEnabled(false);
+
+        group.add(clickRatonRadioButton);
+        group.add(teclaCtrlRadioButton);
+        clickRatonRadioButton.setSelected(true);
 
         // Acciones al pulsar botones
 
@@ -68,7 +80,7 @@ public class MainSwing extends JFrame {
         minButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                System.exit(0);
+                minimizar();
             }
         });
 
@@ -82,7 +94,7 @@ public class MainSwing extends JFrame {
                     stopButton.setEnabled(true);
                     resultLabel.setText("Start!!!");
                 } catch (Exception ex) {
-                    resultLabel.setForeground(Color.magenta);
+                    resultLabel.setForeground(Color.MAGENTA);
                     resultLabel.setText("Debe introducir un número positivo.");
                     System.out.println(ex.getMessage());
                 }
@@ -94,14 +106,13 @@ public class MainSwing extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     timer.cancel();
-//                    timer.purge();
                     resultLabel.setForeground(Color.RED);
                     resultLabel.setText("Stopped!");
                     startButton.setEnabled(true);
                     stopButton.setEnabled(false);
                 } catch (Exception ex) {
-                    resultLabel.setForeground(Color.ORANGE);
-                    resultLabel.setText("Todavía no ha iniciado Clicker!");
+                    resultLabel.setForeground(Color.MAGENTA);
+                    resultLabel.setText("Se ha producido un error!");
                 }
             }
         });
@@ -166,12 +177,17 @@ public class MainSwing extends JFrame {
         resultLabel.setForeground(new Color(235, 218, 42));
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
-                bot.mousePress(mask);
-                bot.mouseRelease(mask);
+                if (teclaCtrlRadioButton.isSelected()) {
+                    bot.keyPress(KeyEvent.VK_CONTROL);
+                    bot.keyRelease(KeyEvent.VK_CONTROL);
+                } else {
+                    bot.mousePress(InputEvent.BUTTON1_DOWN_MASK);
+                    bot.mouseRelease(InputEvent.BUTTON1_DOWN_MASK);
+                }
                 cont++;
-                clicker = "Click nº " + cont + " - " + fechaConFormato.format(new Date());
-                resultLabel.setText(clicker);
-                System.out.println(clicker);
+                consoleMessage = "Click nº " + cont + " - " + fechaConFormato.format(new Date());
+                resultLabel.setText(consoleMessage);
+                System.out.println(consoleMessage);
             }
         }, 1000, milisecs);
     }
@@ -197,5 +213,13 @@ public class MainSwing extends JFrame {
         stopButton.setBorderPainted(false);
     }
 
+    public void minimizar() {
+        this.setState(Frame.ICONIFIED);
+    }
+
+    public void setIcon() {
+        URL urlImage = ClassLoader.getSystemResource("img/mouse-icon-2.png");
+        setIconImage(Toolkit.getDefaultToolkit().createImage(urlImage));
+    }
 
 }
