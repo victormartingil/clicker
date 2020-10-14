@@ -52,6 +52,7 @@ public class MainSwing extends JFrame {
         this.setUndecorated(true);
         this.setContentPane(mainPanel);
         this.pack();
+        stopButton.setEnabled(false);
 
         closeButton.addActionListener(new ActionListener() {
             @Override
@@ -66,9 +67,12 @@ public class MainSwing extends JFrame {
                 try {
                     period = Double.parseDouble(inputTextField.getText());
                     letsClick(period);
+                    startButton.setEnabled(false);
+                    stopButton.setEnabled(true);
+                    resultLabel.setText("Start!!!");
                 } catch (Exception ex) {
-                    resultLabel.setForeground(Color.RED);
-                    resultLabel.setText("Debe introducir un número positivo");
+                    resultLabel.setForeground(Color.magenta);
+                    resultLabel.setText("Debe introducir un número positivo.");
                     System.out.println(ex.getMessage());
                 }
             }
@@ -79,10 +83,13 @@ public class MainSwing extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 try {
                     timer.cancel();
-                    resultLabel.setForeground(Color.WHITE);
-                    resultLabel.setText("Stopped!");
-                } catch (Exception ex) {
+//                    timer.purge();
                     resultLabel.setForeground(Color.RED);
+                    resultLabel.setText("Stopped!");
+                    startButton.setEnabled(true);
+                    stopButton.setEnabled(false);
+                } catch (Exception ex) {
+                    resultLabel.setForeground(Color.ORANGE);
                     resultLabel.setText("Todavía no ha iniciado Clicker!");
                 }
             }
@@ -91,33 +98,36 @@ public class MainSwing extends JFrame {
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                closeButton.setBackground(new Color(25,150,225));
+                closeButton.setBackground(new Color(25, 150, 225));
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
-                closeButton.setBackground(new Color(25,125,225));
+                closeButton.setBackground(new Color(25, 125, 225));
             }
         });
 
         startButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                startButton.setBackground(new Color(50,135,225));
+                startButton.setBackground(new Color(50, 135, 225));
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
-                startButton.setBackground(new Color(25,125,225));
+                startButton.setBackground(new Color(25, 125, 225));
             }
         });
 
         stopButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
-                stopButton.setBackground(new Color(200,51,29));
+                stopButton.setBackground(new Color(200, 51, 29));
             }
+
             @Override
             public void mouseExited(MouseEvent e) {
-                stopButton.setBackground(new Color(225,41,29));
+                stopButton.setBackground(new Color(225, 41, 29));
             }
         });
     }
@@ -126,8 +136,8 @@ public class MainSwing extends JFrame {
         timer = new Timer();
         cont = 0;
         secs = secs * 1000;
-        int milisecs = (int)secs;
-        resultLabel.setForeground(new Color(235,218,42));
+        int milisecs = (int) secs;
+        resultLabel.setForeground(new Color(235, 218, 42));
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
                 bot.mousePress(mask);
@@ -135,6 +145,7 @@ public class MainSwing extends JFrame {
                 cont++;
                 clicker = "Click nº " + cont + " - " + fechaConFormato.format(new Date());
                 resultLabel.setText(clicker);
+                System.out.println(clicker);
             }
         }, 1000, milisecs);
     }
@@ -144,7 +155,7 @@ public class MainSwing extends JFrame {
         frame.frameDetails(frame);
     }
 
-    public void frameDetails(MainSwing frame){
+    public void frameDetails(MainSwing frame) {
         frame.setVisible(true);
         frame.setResizable(false);
         frame.setSize(400, 250);
@@ -153,7 +164,7 @@ public class MainSwing extends JFrame {
         designDetails();
     }
 
-    public void designDetails(){
+    public void designDetails() {
         closeButton.setBorderPainted(false);
         startButton.setBorderPainted(false);
         stopButton.setBorderPainted(false);
