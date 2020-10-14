@@ -56,10 +56,19 @@ public class MainSwing extends JFrame {
         this.pack();
         stopButton.setEnabled(false);
 
+        // Acciones al pulsar botones
+
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 System.exit(0);
+            }
+        });
+
+        minButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+//                System.exit(0);
             }
         });
 
@@ -96,6 +105,9 @@ public class MainSwing extends JFrame {
                 }
             }
         });
+
+
+        // Efecto Hover sobre los botones
 
         closeButton.addMouseListener(new MouseAdapter() {
             @Override
