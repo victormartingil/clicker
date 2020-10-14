@@ -71,6 +71,8 @@ public class MainSwing extends JFrame {
         group.add(teclaCtrlRadioButton);
         teclaCtrlRadioButton.setSelected(true);
 
+        JFrame frame = this;
+
         // Mover Undecorated JFrame
         titlePanel.addMouseListener(new MouseAdapter()
         {
@@ -103,7 +105,7 @@ public class MainSwing extends JFrame {
         minButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                minimizar();
+                minimizar(frame);
             }
         });
 
@@ -241,13 +243,73 @@ public class MainSwing extends JFrame {
         }, 1000, milisecs);
     }
 
-    public void minimizar() {
-        this.setState(Frame.ICONIFIED);
-    }
-
     public void setIcon() {
         URL urlImage = ClassLoader.getSystemResource("img/mouse-icon-2.png");
         setIconImage(Toolkit.getDefaultToolkit().createImage(urlImage));
     }
+
+    public void minimizar(JFrame frame) {
+        setState(Frame.ICONIFIED);
+        frame.setVisible(false);
+        // Añadir el icono al System Tray
+        moveToSystemTray(frame);
+    }
+
+    public void moveToSystemTray(JFrame frame) {
+        if(!SystemTray.isSupported()){
+            System.out.println("System tray is not supported !!! ");
+            return ;
+        }
+        URL urlImage = ClassLoader.getSystemResource("img/mouse-icon-1.png");
+        Image image = Toolkit.getDefaultToolkit().createImage(urlImage);
+
+        SystemTray systemTray = SystemTray.getSystemTray();
+        PopupMenu trayPopupMenu = new PopupMenu();
+
+        TrayIcon trayIcon = new TrayIcon(image, "Clicker", trayPopupMenu);
+        trayIcon.setImageAutoSize(true);
+
+        //1t menuitem for popupmenu
+        MenuItem action = new MenuItem("Open");
+        action.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setExtendedState(JFrame.NORMAL);
+                frame.setVisible(true);
+                systemTray.remove(trayIcon);
+            }
+        });
+        trayPopupMenu.add(action);
+
+        //2nd menuitem of popupmenu
+        MenuItem close = new MenuItem("Close");
+        close.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.exit(0);
+            }
+        });
+        trayPopupMenu.add(close);
+
+        //Open on double click
+        trayIcon.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount() >= 2){
+                    frame.setExtendedState(JFrame.NORMAL);
+                    frame.setVisible(true);
+                    systemTray.remove(trayIcon);
+                }
+            }
+        });
+
+        try{
+            systemTray.add(trayIcon);
+        }catch(AWTException awtException){
+            awtException.printStackTrace();
+        }
+    }
+
+
 
 }
