@@ -42,6 +42,8 @@ public class MainSwing extends JFrame {
     private JPanel titlePanel;
     private JLabel titleLabel;
     private JButton closeButton;
+    private JButton minButton;
+    private JPanel tittleButtonPanel;
 
 
     public MainSwing(String title) throws AWTException {
@@ -107,6 +109,18 @@ public class MainSwing extends JFrame {
             }
         });
 
+        minButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                minButton.setBackground(new Color(25, 150, 225));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                minButton.setBackground(new Color(25, 125, 225));
+            }
+        });
+
         startButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseEntered(MouseEvent e) {
@@ -166,6 +180,7 @@ public class MainSwing extends JFrame {
 
     public void designDetails() {
         closeButton.setBorderPainted(false);
+        minButton.setBorderPainted(false);
         startButton.setBorderPainted(false);
         stopButton.setBorderPainted(false);
     }
