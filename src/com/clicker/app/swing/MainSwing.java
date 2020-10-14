@@ -23,7 +23,16 @@ public class MainSwing extends JFrame {
     double period;
     int cont;
 
+    int posX = 0;
+    int posY = 0;
+
     private JPanel mainPanel;
+
+    private JPanel titlePanel;
+    private JLabel titleLabel;
+    private JPanel tittleButtonPanel;
+    private JButton closeButton;
+    private JButton minButton;
 
     private JPanel decriptionPanel;
     private JLabel descriptionLabel;
@@ -40,11 +49,6 @@ public class MainSwing extends JFrame {
     private JButton startButton;
     private JPanel stopPanel;
     private JButton stopButton;
-    private JPanel titlePanel;
-    private JLabel titleLabel;
-    private JButton closeButton;
-    private JButton minButton;
-    private JPanel tittleButtonPanel;
 
     private JRadioButton clickRatonRadioButton;
     private JRadioButton teclaCtrlRadioButton;
@@ -55,18 +59,37 @@ public class MainSwing extends JFrame {
     public MainSwing(String title) throws AWTException {
         super(title);
 
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // Already there
-        setExtendedState(JFrame.MAXIMIZED_BOTH);
         setUndecorated(true);
         setIcon();
-//        this.setType(Type.UTILITY); // Oculta icono pero no se como volver a maximizar
         setContentPane(mainPanel);
         pack();
+
         stopButton.setEnabled(false);
+        inputTextField.setText("295");
 
         group.add(clickRatonRadioButton);
         group.add(teclaCtrlRadioButton);
-        clickRatonRadioButton.setSelected(true);
+        teclaCtrlRadioButton.setSelected(true);
+
+        // Mover Undecorated JFrame
+        titlePanel.addMouseListener(new MouseAdapter()
+        {
+            public void mousePressed(MouseEvent e)
+            {
+                posX=e.getX();
+                posY=e.getY();
+            }
+        });
+
+        titlePanel.addMouseMotionListener(new MouseAdapter()
+        {
+            public void mouseDragged(MouseEvent evt)
+            {
+                //sets frame position when mouse dragged
+                setLocation (evt.getXOnScreen()-posX,evt.getYOnScreen()-posY);
+
+            }
+        });
 
         // Acciones al pulsar botones
 
@@ -169,6 +192,32 @@ public class MainSwing extends JFrame {
         });
     }
 
+    public static void main(String[] args) throws AWTException {
+        // Construye el JFrame con lo establecido en el Constructor
+        MainSwing frame = new MainSwing("Clicker");
+        // Ajustes del JFrame
+        frame.frameDetails(frame);
+    }
+
+    public void frameDetails(MainSwing frame) {
+        frame.setVisible(true);
+        frame.setResizable(false);
+        frame.setSize(400, 250);
+        frame.setLocationRelativeTo(null);
+
+        // Más ajustes del JFrame
+        designDetails();
+    }
+
+    public void designDetails() {
+        closeButton.setBorderPainted(false);
+        minButton.setBorderPainted(false);
+        startButton.setBorderPainted(false);
+        stopButton.setBorderPainted(false);
+    }
+
+    // Método que inicia el autoClick
+
     public void letsClick(double secs) {
         timer = new Timer();
         cont = 0;
@@ -190,27 +239,6 @@ public class MainSwing extends JFrame {
                 System.out.println(consoleMessage);
             }
         }, 1000, milisecs);
-    }
-
-    public static void main(String[] args) throws AWTException {
-        MainSwing frame = new MainSwing("Clicker");
-        frame.frameDetails(frame);
-    }
-
-    public void frameDetails(MainSwing frame) {
-        frame.setVisible(true);
-        frame.setResizable(false);
-        frame.setSize(400, 250);
-        frame.setLocationRelativeTo(null);
-
-        designDetails();
-    }
-
-    public void designDetails() {
-        closeButton.setBorderPainted(false);
-        minButton.setBorderPainted(false);
-        startButton.setBorderPainted(false);
-        stopButton.setBorderPainted(false);
     }
 
     public void minimizar() {
