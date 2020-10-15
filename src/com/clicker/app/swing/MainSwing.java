@@ -66,6 +66,7 @@ public class MainSwing extends JFrame {
 
         stopButton.setEnabled(false);
         inputTextField.setText("295");
+        resultLabel.setText("Presione Start para comenzar");
 
         group.add(clickRatonRadioButton);
         group.add(teclaCtrlRadioButton);
@@ -204,7 +205,7 @@ public class MainSwing extends JFrame {
     public void frameDetails(MainSwing frame) {
         frame.setVisible(true);
         frame.setResizable(false);
-        frame.setSize(400, 250);
+        frame.setSize(400, 275);
         frame.setLocationRelativeTo(null);
 
         // Más ajustes del JFrame
