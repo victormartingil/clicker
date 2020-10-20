@@ -74,21 +74,17 @@ public class MainSwing extends JFrame {
         JFrame frame = this;
 
         // Mover Undecorated JFrame
-        titlePanel.addMouseListener(new MouseAdapter()
-        {
-            public void mousePressed(MouseEvent e)
-            {
-                posX=e.getX();
-                posY=e.getY();
+        titlePanel.addMouseListener(new MouseAdapter() {
+            public void mousePressed(MouseEvent e) {
+                posX = e.getX();
+                posY = e.getY();
             }
         });
 
-        titlePanel.addMouseMotionListener(new MouseAdapter()
-        {
-            public void mouseDragged(MouseEvent evt)
-            {
+        titlePanel.addMouseMotionListener(new MouseAdapter() {
+            public void mouseDragged(MouseEvent evt) {
                 //sets frame position when mouse dragged
-                setLocation (evt.getXOnScreen()-posX,evt.getYOnScreen()-posY);
+                setLocation(evt.getXOnScreen() - posX, evt.getYOnScreen() - posY);
 
             }
         });
@@ -195,6 +191,10 @@ public class MainSwing extends JFrame {
         MainSwing frame = new MainSwing("Clicker");
         // Ajustes del JFrame
         frame.frameDetails(frame);
+        // Si queremos que al abrir arranque y se minimice automaticamente
+        // frame.letsClick();
+        // frame.minimizar(frame);
+
     }
 
     public void frameDetails(MainSwing frame) {
@@ -259,9 +259,9 @@ public class MainSwing extends JFrame {
     }
 
     public void moveToSystemTray(JFrame frame) {
-        if(!SystemTray.isSupported()){
+        if (!SystemTray.isSupported()) {
             System.out.println("System tray is not supported !!! ");
-            return ;
+            return;
         }
         URL urlImage = ClassLoader.getSystemResource("img/mouse-icon-1.png");
         Image image = Toolkit.getDefaultToolkit().createImage(urlImage);
@@ -298,7 +298,7 @@ public class MainSwing extends JFrame {
         trayIcon.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount() > 1){
+                if (e.getClickCount() > 1) {
                     frame.setExtendedState(JFrame.NORMAL);
                     frame.setVisible(true);
                     frame.toFront();
@@ -308,13 +308,12 @@ public class MainSwing extends JFrame {
         });
 
 
-        try{
+        try {
             systemTray.add(trayIcon);
-        }catch(AWTException awtException){
+        } catch (AWTException awtException) {
             awtException.printStackTrace();
         }
     }
-
 
 
 }
