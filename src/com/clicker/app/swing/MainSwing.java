@@ -20,7 +20,6 @@ public class MainSwing extends JFrame {
     SimpleDateFormat fechaConFormato = new SimpleDateFormat(formatoFecha);
 
     String consoleMessage;
-    double period;
     int cont;
 
     int posX = 0;
@@ -65,7 +64,7 @@ public class MainSwing extends JFrame {
         pack();
 
         stopButton.setEnabled(false);
-        inputTextField.setText("295");
+        inputTextField.setText("59");
         resultLabel.setText("Presione Start para comenzar");
 
         group.add(clickRatonRadioButton);
@@ -114,11 +113,7 @@ public class MainSwing extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 try {
-                    period = Double.parseDouble(inputTextField.getText());
-                    letsClick(period);
-                    startButton.setEnabled(false);
-                    stopButton.setEnabled(true);
-                    resultLabel.setText("Start!!!");
+                    letsClick();
                 } catch (Exception ex) {
                     resultLabel.setForeground(Color.MAGENTA);
                     resultLabel.setText("Debe introducir un número positivo.");
@@ -221,11 +216,18 @@ public class MainSwing extends JFrame {
 
     // Método que inicia el autoClick
 
-    public void letsClick(double secs) {
+    public void letsClick() {
         timer = new Timer();
         cont = 0;
+        double secs = Double.parseDouble(inputTextField.getText());
         secs = secs * 1000;
         int milisecs = (int) secs;
+
+        startButton.setEnabled(false);
+        stopButton.setEnabled(true);
+        resultLabel.setText("Start!!!");
+
+
         resultLabel.setForeground(new Color(235, 218, 42));
         timer.scheduleAtFixedRate(new TimerTask() {
             public void run() {
